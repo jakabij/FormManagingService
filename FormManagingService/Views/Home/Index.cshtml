@@ -1,6 +1,39 @@
 ﻿<header>
     <div id="headerBlock">
-        <a class="header" id="firstHeader" >Main Page</a>
-        @*<a class="header">Login</a>*@
+        <a class="header" id="firstHeader">Main Page</a>
     </div>
+    <br /> <br /> <br />
+
+
+    <form id="registerForms" style="display: none">
+        <a>Username: </a> <br />
+        <input type="text" id="registerUsername" />
+        <br />
+
+        <a>E-mail: </a> <br />
+        <input type="text" id="registerEmail" />
+        <br />
+
+        <a>Password: </a> <br />
+        <input type="text" id="registerPassword" />
+
+        <br /> <br />
+        <input type="button" onclick="Register(this.form)" value="Create"/>
+    </form>
+
+
+
+    <form id="loginForms" style="display: none">
+        <a>E-mail: </a> <br />
+        <input type="text" id="loginEmail" />
+        <br />
+
+        <a>Password: </a> <br />
+        <input type="text" id="loginPassword" />
+
+        <br /> <br />
+        <input type="button" onclick="Login(this.form)" value="Login"/>
+        <br /> <br /> <br />
+    </form>
+
 </header>
