@@ -5,35 +5,33 @@
     <br /> <br /> <br />
 
 
-    <form id="registerForms" style="display: none">
+    <form id="registerForms" method="POST" style="display: none">
         <a>Username: </a> <br />
-        <input type="text" id="registerUsername" />
+        <input type="text" name="username" id="registerUsername" />
         <br />
 
-        <a>E-mail: </a> <br />
-        <input type="text" id="registerEmail" />
+        E-mail: <br />
+        <input type="text" name="email" id="registerEmail" />
         <br />
 
-        <a>Password: </a> <br />
-        <input type="text" id="registerPassword" />
+        Password: <br />
+        <input type="text" name="password" id="registerPassword" />
 
         <br /> <br />
-        <input type="button" onclick="Register(this.form)" value="Create"/>
+        <input type="button" onclick="register(this.form)" value="Create"/>
     </form>
 
 
 
-    <form id="loginForms" style="display: none">
-        <a>E-mail: </a> <br />
-        <input type="text" id="loginEmail" />
+    <form id="loginForms" method="POST" style="display: none">
+        Email: <br />
+        <input type="text" name="email" value="1@1.com">
         <br />
 
-        <a>Password: </a> <br />
-        <input type="text" id="loginPassword" />
+        Password: <br />
+        <input type="text" name="password" value="elso1">
 
         <br /> <br />
-        <input type="button" onclick="Login(this.form)" value="Login"/>
-        <br /> <br /> <br />
+        <input type="button" name="button" value="login" onClick="login(this.form)">
     </form>
-
 </header>

@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS questions CASCADE;
 DROP TABLE IF EXISTS answers CASCADE;
 
 CREATE TABLE users(
-	user_id INT NOT NULL,
+	user_id SERIAL,
 	user_name TEXT NOT NULL,
 	user_email TEXT NOT NULL,
 	user_password TEXT NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE users(
 	
 
 CREATE TABLE forms(
-	form_id INT NOT NULL,
+	form_id SERIAL,
 	admin_id INT NOT NULL,
 	form_asked_user_id INT,
 	form_question_id INT,
@@ -26,7 +26,7 @@ CREATE TABLE forms(
 
 CREATE TABLE questions(
 	form_id INT NOT NULL,
-	question_id INT NOT NULL,
+	question_id SERIAL,
 	question_title TEXT,
 	PRIMARY KEY(question_id),
 	FOREIGN KEY (form_id)
@@ -35,7 +35,7 @@ CREATE TABLE questions(
 
 
 CREATE TABLE answers(
-	answer_id INT NOT NULL,
+	answer_id SERIAL,
 	question_id INT NOT NULL,
 	answer_text TEXT,
 	PRIMARY KEY(answer_id),

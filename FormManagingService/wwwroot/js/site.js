@@ -1,11 +1,144 @@
-﻿function hideRegister(){
+﻿let currentProfileEmail = null;
+let currentProfileID = null;
+
+
+function showLoginHeader(){
+    let loginHeader = document.querySelector("#loginHeader");
+    loginHeader.setAttribute("style","display: unset");
+}
+
+
+function showRegisterHeader(){
+    let registerHeader = document.querySelector("#registerHeader");
+    registerHeader.setAttribute("style", "display: unset");
+}
+
+
+function logout(){
+    let header = document.querySelector("#headerBlock");
+
+    let headerToRemove = document.querySelector("#logoutHeader");
+    header.removeChild(headerToRemove);
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'User/Logout', true);
+    xhr.send();
+
+    showLoginHeader();
+    showRegisterHeader();
+
+    currentProfileEmail = null;
+    currentProfileID = null;
+
+    alert("You logged out!");
+}
+
+
+function hideLoginHeader(){
+    let loginHeader = document.querySelector("#loginHeader");
+    loginHeader.setAttribute("style","display: none");
+}
+
+
+function hideRegisterHeader(){
+    let registerHeader = document.querySelector("#registerHeader");
+    registerHeader.setAttribute("style", "display: none");
+}
+
+
+function showLogout(){
+    hideLoginHeader();
+    hideRegisterHeader();
+
+    let header = document.querySelector("#headerBlock");
+
+    let logoutHeader = document.createElement("a");
+    logoutHeader.textContent = "Logout";
+    logoutHeader.setAttribute("class", "header");
+    logoutHeader.setAttribute("id", "logoutHeader");
+    logoutHeader.addEventListener("click", logout);
+    
+    header.appendChild(logoutHeader);
+}
+
+
+function sendDataToLogin(destination, data) {
+    let xhr = new XMLHttpRequest();
+    if (xhr != null) {
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                if (xhr.responseText !== 0) {
+                    let profileEmail = 0;
+                    let profileId = 1;
+
+                    let profileData = JSON.parse(xhr.responseText);
+                    currentProfileEmail = profileData[profileEmail];
+                    currentProfileID = parseInt(profileData[profileId]);   //intté alakítani
+
+                    console.log(currentProfileEmail)
+                    console.log(currentProfileID)
+
+                    hideLoginPage();
+                    showLogout();
+                }
+            }
+        }
+        xhr.open('POST', destination, true);
+        xhr.send(data);
+    }
+}
+
+
+function login(form) {
+    let data = new FormData();
+    data.append('email', form.email.value);
+    data.append('password', form.password.value);
+    
+    sendDataToLogin("User/Login", data);
+}
+
+
+function sendDataToRegister(destination, data) {
+    let xhr = new XMLHttpRequest();
+    if (xhr != null) {
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                alert(JSON.parse(xhr.responseText));
+                if (xhr.responseText != '"Success!"') {
+                    alert(resultText);
+                } else {
+                    alert("Welcome friend! Now Login please!");
+                    hideRegisterPage();
+                    showLoginPage();
+                }
+            }
+        }
+        xhr.open('POST', destination, true);
+        xhr.send(data);
+    }
+}
+
+
+function register(form)
+{
+    let data = new FormData();
+    data.append('username',form.username.value);
+    data.append('email', form.email.value);
+    data.append('password', form.password.value);
+    
+    sendDataToRegister("User/Register", data);
+}
+
+
+
+function hideRegisterPage(){
     //Hide the Register page.
     let formBlock = document.querySelector("#registerForms");
     formBlock.setAttribute("style", "display: none");
 }
 
 
-function hideLogin(){
+function hideLoginPage(){
     //Hide the Login page.
     let formBlock = document.querySelector("#loginForms");
     formBlock.setAttribute("style", "display: none");
@@ -16,7 +149,7 @@ function hideLogin(){
 function showLoginPage() {
     //Load in the Login "page"
 
-    hideRegister();     //But first hide the Register page if it's clicked before.
+    hideRegisterPage();     //But first hide the Register page if it's clicked before.
     let formBlock = document.querySelector("#loginForms");
     formBlock.setAttribute("style", "display: unset");
 }
@@ -25,7 +158,7 @@ function showLoginPage() {
 function showRegisterPage(){
     //Load in the Register "page"
 
-    hideLogin();        //But first hide the Login page if it's clicked before.
+    hideLoginPage();        //But first hide the Login page if it's clicked before.
     let formBlock = document.querySelector("#registerForms");
     formBlock.setAttribute("style", "display: unset");
 }
