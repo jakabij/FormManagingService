@@ -73,8 +73,8 @@ namespace FormManagingService.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
-
-            string[] result = new string[] {email, _sqlUsersService.GetUserId(email).ToString() };
+            string userID = _sqlUsersService.GetUserId(email).ToString();
+            string[] result = new string[] {email, userID , _sqlUsersService.UserIsAdmin(Convert.ToInt32(userID)).ToString() };
             return Json(result);
         }
 

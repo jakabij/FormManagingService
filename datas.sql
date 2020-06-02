@@ -42,3 +42,6 @@ CREATE TABLE answers(
 	FOREIGN KEY (question_id)
 	REFERENCES questions(question_id)
 );
+
+INSERT INTO users (user_name, user_email, user_password, user_is_admin)
+VALUES ('Admin', 'admin@admin.com', 'dnuOQa1GQMjo2g9/JbRVFjRoxLeRgD+YYtMFuHFhzlP3dLcQ', true);

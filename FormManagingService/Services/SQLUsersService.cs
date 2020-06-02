@@ -35,5 +35,18 @@ namespace FormManagingService.Services
             int userId = Convert.ToInt32(reader["user_id"]);
             return userId;
         }
+
+        public bool UserIsAdmin(int userID)
+        {
+            using var command = _connection.CreateCommand();
+
+            command.CommandText = $"SELECT user_is_admin FROM users WHERE user_id = '{userID}'";
+
+            using var reader = command.ExecuteReader();
+
+            reader.Read();
+            bool isAdmin = Convert.ToBoolean(reader["user_is_admin"]);
+            return isAdmin;
+        }
     }
 }

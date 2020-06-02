@@ -1,5 +1,6 @@
 ﻿let currentProfileEmail = null;
 let currentProfileID = null;
+let currentProfileIsAdmin = false;
 
 
 function showLoginHeader(){
@@ -19,6 +20,10 @@ function logout(){
 
     let headerToRemove = document.querySelector("#logoutHeader");
     header.removeChild(headerToRemove);
+
+    if(currentProfileIsAdmin){
+        hideFormMakingHeader();
+    }
 
     let xhr = new XMLHttpRequest();
     xhr.open('GET', 'User/Logout', true);
@@ -62,24 +67,33 @@ function showLogout(){
 }
 
 
-function sendDataToLogin(destination, data) {
+function sendDataToLogin(destination, data) {           //After we logged in we store the userId, email and store if the user is an admin
     let xhr = new XMLHttpRequest();
     if (xhr != null) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                if (xhr.responseText !== 0) {
+                if (JSON.parse(xhr.responseText) !== 0) {
                     let profileEmail = 0;
                     let profileId = 1;
+                    let profileIsAdmin = 2;
 
                     let profileData = JSON.parse(xhr.responseText);
+                    
                     currentProfileEmail = profileData[profileEmail];
-                    currentProfileID = parseInt(profileData[profileId]);   //intté alakítani
+                    currentProfileID = parseInt(profileData[profileId]);
 
-                    console.log(currentProfileEmail)
-                    console.log(currentProfileID)
+                    if(profileData[profileIsAdmin] === "False"){
+                        currentProfileIsAdmin = false;
+                    }else{
+                        currentProfileIsAdmin = true;
 
+                        showFormMakingHeader();
+                    }
+                   
                     hideLoginPage();
                     showLogout();
+                }else{
+                    alert("Wrong password!");
                 }
             }
         }
@@ -104,7 +118,7 @@ function sendDataToRegister(destination, data) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 alert(JSON.parse(xhr.responseText));
-                if (xhr.responseText != '"Success!"') {
+                if (JSON.parse(xhr.responseText) != "Success!") {
                     alert(resultText);
                 } else {
                     alert("Welcome friend! Now Login please!");

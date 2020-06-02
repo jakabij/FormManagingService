@@ -9,5 +9,6 @@ namespace FormManagingService.Services
     {
         public void AddUser(string name, string email, string password);
         public int GetUserId(string email);
+        public bool UserIsAdmin(int userID);
     }
 }
