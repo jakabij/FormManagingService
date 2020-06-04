@@ -25,7 +25,8 @@ namespace FormManagingService.Controllers
         public ActionResult AddForm()
         {
             int adminID = Convert.ToInt32(Request.Form["adminID"]);
-            _sqlFormService.CreateForm(adminID);
+            string formTitle = Request.Form["questionTitle"];
+            _sqlFormService.CreateForm(adminID, formTitle);
 
             int questionCount = Convert.ToInt32(Request.Form["questionCount"]);
             List<string> questions = new List<string>();
@@ -45,10 +46,18 @@ namespace FormManagingService.Controllers
 
         public ActionResult AddUsersToForm()
         {
+            int adminID = Convert.ToInt32(Request.Form["adminID"]);
+            int emailCount = Convert.ToInt32(Request.Form["emailCount"]);
+            List<string> userEmails = new List<string>();
+            for(int count = 0; count < emailCount; count++)
+            {
+                string dataElementName = "email" + (count + 1);
+                userEmails.Add(Request.Form[dataElementName]);
+            }
 
+            List<string> notFoundUsers = _sqlFormService.SendFormToUsers(userEmails, adminID);
 
-
-            return Json(0);
+            return Json(notFoundUsers);
         }
     }
 }

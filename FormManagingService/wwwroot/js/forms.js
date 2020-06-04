@@ -3,12 +3,27 @@ let emailAdressCounter = 1;
 
 
 
+function hideEmailAddingPage(){
+    let emailAddingPage = document.querySelector("#emailAddingForm");
+
+    for(let count = 1; count < emailAddingPage.childElementCount; count++){
+        emailAddingPage.removeChild(emailAddingPage.children[count]);
+    }
+
+    emailAddingPage.setAttribute("style", "display :none");
+}
+
+
 function sendDataToFormsEmail(destination, data){
     let xhr = new XMLHttpRequest();
     if (xhr != null) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                
+                let result = JSON.parse(xhr.responseText);
+                hideEmailAddingPage();
+
+                // result.forEach(element => console.log(element))
+
             }
         }
         xhr.open('POST', destination, true);
@@ -19,6 +34,9 @@ function sendDataToFormsEmail(destination, data){
 
 function sendToUsers(form){
     let data = new FormData();
+    data.append("adminID", currentProfileID);
+    data.append("emailCount", emailAdressCounter);
+
     for(let count = 0; count < emailAdressCounter; count++){
         let dataElementName = "email" + (count + 1);
         data.append(dataElementName, document.forms["emailAddingForm"][dataElementName].value);
@@ -39,21 +57,24 @@ function addMoreEmail(){
 
     let emailText = document.createElement("a");
     emailText.textContent = "Email:"
-    emailAddingPage.appendChild(questionText);
+    emailAddingPage.appendChild(emailText);
 
     emailAddingPage.appendChild(document.createElement("br"));
 
     let anotherEmail = document.createElement("input");
-
     anotherEmail.setAttribute("type", "text");
     let emailID = "email" + emailAdressCounter;
     anotherEmail.setAttribute("name", emailID);
+
+    emailAddingPage.appendChild(anotherEmail);
 }
 
 
 function showEmailAddingPage(){
     let emailAddingPage = document.querySelector("#emailAddingForm");
     emailAddingPage.setAttribute("style", "display: unset");
+
+    emailAddingPage.appendChild(document.createElement("br"));
 
     let addMoreEmailButton = document.createElement("input");
     addMoreEmailButton.setAttribute("type", "button");
@@ -68,7 +89,7 @@ function showEmailAddingPage(){
 
     let emailText = document.createElement("a");
     emailText.textContent = "Email:"
-    emailAddingPage.appendChild(questionText);
+    emailAddingPage.appendChild(emailText);
 
     emailAddingPage.appendChild(document.createElement("br"));
 
@@ -115,6 +136,7 @@ function saveForm(form){
 
         data.append("adminID", currentProfileID);
         data.append("questionCount", questionCounter);
+        data.append("questionTitle", document.forms["questionForm"]["formTitle"].value);
         for(let i = 0; i < questionCounter; i++){
             let questionID = "question" + i;
             data.append(questionID, document.forms["questionForm"][questionID].value);
@@ -162,6 +184,21 @@ function createFormPage(){          //in this page you can create forms and save
     });
 
     createFormPage.appendChild(questionButton);
+
+    createFormPage.appendChild(document.createElement("br"));
+
+    let titleText = document.createElement("a");
+    titleText.textContent = "The title of the form:"
+    createFormPage.appendChild(titleText);
+
+    createFormPage.appendChild(document.createElement("br"));
+    let titleInput = document.createElement("input");
+    titleInput.setAttribute("id", "formTitle");
+    titleInput.setAttribute("name", "formTitle");
+
+    createFormPage.appendChild(titleInput);
+    createFormPage.appendChild(document.createElement("br"));
+    createFormPage.appendChild(document.createElement("br"));
 }
 
 

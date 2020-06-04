@@ -8,7 +8,7 @@ namespace FormManagingService.Services
     public interface IFormsService
     {
         public void AddQuestion(string question, int adminID);
-        public void CreateForm(int adminID);
-        //public void UpdateFormWithUser();
+        public void CreateForm(int adminID, string title);
+        public List<string> SendFormToUsers(List<string> emails, int adminID);
     }
 }

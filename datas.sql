@@ -17,6 +17,7 @@ CREATE TABLE forms(
 	form_id SERIAL,
 	admin_id INT NOT NULL,
 	form_is_not_sent_yet BOOL DEFAULT true,
+	form_title TEXT,
 	PRIMARY KEY(form_id),
 	FOREIGN KEY (admin_id)
 	REFERENCES users(user_id)
@@ -41,6 +42,17 @@ CREATE TABLE answers(
 	FOREIGN KEY (question_id)
 	REFERENCES questions(question_id)
 );
+
+CREATE TABLE users_forms_connect(
+	user_id INT NOT NULL,
+	form_id INT NOT NULL,
+	admin_id INT NOT NULL,
+	FOREIGN KEY (user_id)
+	REFERENCES users(user_id),
+	FOREIGN KEY (form_id)
+	REFERENCES forms(form_id)
+);
+
 
 INSERT INTO users (user_name, user_email, user_password, user_is_admin)
 VALUES ('Admin', 'admin@admin.com', 'dnuOQa1GQMjo2g9/JbRVFjRoxLeRgD+YYtMFuHFhzlP3dLcQ', true);
