@@ -36,11 +36,13 @@
     </form>
 
 
-    <form id="questionForms" style="display: none">
+    <form name="questionForm" id="questionForms" style="display: none">
         <input type="button" id="createFormButton" value="Save Form" onClick="saveForm(this.form)">
-        <br /><br />
     </form>
 
+    <form id="emailAddingForm" style="display: none">
+        <input type="button" value="Send Form" onClick="sendToUsers(this.form)">
+    </form>
 
     
 </header>

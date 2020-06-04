@@ -17,7 +17,6 @@ CREATE TABLE forms(
 	form_id SERIAL,
 	admin_id INT NOT NULL,
 	form_asked_user_id INT,
-	form_question_id INT,
 	PRIMARY KEY(form_id),
 	FOREIGN KEY (admin_id)
 	REFERENCES users(user_id)

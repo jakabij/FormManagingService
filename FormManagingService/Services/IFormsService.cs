@@ -7,6 +7,7 @@ namespace FormManagingService.Services
 {
     public interface IFormsService
     {
-
+        public void AddQuestion(string question);
+        public void CreateForm(int adminID);
     }
 }
