@@ -21,9 +21,7 @@ function sendDataToFormsEmail(destination, data){
             if (xhr.readyState === 4 && xhr.status === 200) {
                 let result = JSON.parse(xhr.responseText);
                 hideEmailAddingPage();
-
-                // result.forEach(element => console.log(element))
-
+                afterSendingEmails(result);
             }
         }
         xhr.open('POST', destination, true);
@@ -223,7 +221,4 @@ function showFormMakingHeader(){
     createFormHeader.addEventListener("click",createFormPage);
 
     header.appendChild(createFormHeader);
-
-    // console.log(currentProfileEmail)
-    // console.log(currentProfileID)
 }
