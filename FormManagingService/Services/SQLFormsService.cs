@@ -20,18 +20,19 @@ namespace FormManagingService.Services
         {
             using var command = _connection.CreateCommand();
 
-            command.CommandText = $"INSERT INTO forms (admin_id, form_asked_user_id) VALUES" +
-                $"('{adminID}', {0})";
+            //add 0 value to user_id because that means that the form has not been send to anyone
+            command.CommandText = $"INSERT INTO forms (admin_id) VALUES" +
+                $"('{adminID}')";
 
             command.ExecuteNonQuery();
         }
 
 
-        public int GetFormId()
+        public int GetFormId(int adminID)
         {
             using var command = _connection.CreateCommand();
 
-            command.CommandText = "SELECT form_id FROM forms WHERE form_asked_user_id = 0";
+            command.CommandText = $"SELECT form_id FROM forms WHERE form_is_not_sent_yet = true AND admin_id = {adminID}";
 
             using var reader = command.ExecuteReader();
             reader.Read();
@@ -39,9 +40,9 @@ namespace FormManagingService.Services
             return formID;
         }
 
-        public void AddQuestion(string question)
+        public void AddQuestion(string question, int adminID)
         {
-            int formID = GetFormId();
+            int formID = GetFormId(adminID);
 
             using var command = _connection.CreateCommand();        //form ID-t ide írniiiii
 
@@ -50,5 +51,17 @@ namespace FormManagingService.Services
 
             command.ExecuteNonQuery();
         }
+
+
+        //public void UpdateFormWithUser()
+        //{
+        //    //int formID = GetFormId();
+
+        //    //using var command = _connection.CreateCommand();        //form ID-t ide írniiiii
+
+        //    //command.CommandText =$"";
+
+        //    //command.ExecuteNonQuery();
+        //}
     }
 }

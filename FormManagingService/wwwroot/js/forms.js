@@ -2,13 +2,29 @@
 let emailAdressCounter = 1;
 
 
-function sendToUsers(form){
-    // let data = new FormData();
-    // for(let count = 0; count < emailAdressCounter; count++){
-    //     let dataElementName = "email" + count;
-    //     data.append(dataElementName, document.forms["emailAddingForm"][dataElementName].value);
-    // }
 
+function sendDataToFormsEmail(destination, data){
+    let xhr = new XMLHttpRequest();
+    if (xhr != null) {
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                
+            }
+        }
+        xhr.open('POST', destination, true);
+        xhr.send(data);
+    }
+}
+
+
+function sendToUsers(form){
+    let data = new FormData();
+    for(let count = 0; count < emailAdressCounter; count++){
+        let dataElementName = "email" + (count + 1);
+        data.append(dataElementName, document.forms["emailAddingForm"][dataElementName].value);
+    }
+
+    sendDataToFormsEmail("Form/AddUsersToForm", data);
 
     emailAdressCounter = 1;
 }

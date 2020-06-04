@@ -36,10 +36,19 @@ namespace FormManagingService.Controllers
                 string questionText = Request.Form[questionID];
 
                 questions.Add(questionText);
-                _sqlFormService.AddQuestion(questionText);
+                _sqlFormService.AddQuestion(questionText, adminID);
             }
 
             return Json("Success");
+        }
+
+
+        public ActionResult AddUsersToForm()
+        {
+
+
+
+            return Json(0);
         }
     }
 }

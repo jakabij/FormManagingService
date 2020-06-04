@@ -16,7 +16,7 @@ CREATE TABLE users(
 CREATE TABLE forms(
 	form_id SERIAL,
 	admin_id INT NOT NULL,
-	form_asked_user_id INT,
+	form_is_not_sent_yet BOOL DEFAULT true,
 	PRIMARY KEY(form_id),
 	FOREIGN KEY (admin_id)
 	REFERENCES users(user_id)
