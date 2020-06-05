@@ -10,7 +10,8 @@ namespace FormManagingService.Models
         public int FormID { get; set; }
         public int AdminID { get; set; }
         public string Title { get; set; }
-        public List<QuestionModel> questionList;
+
+        public List<QuestionModel> questionList { get; set; }
 
         public FormModel(int formID, int adminID, string title)
         {

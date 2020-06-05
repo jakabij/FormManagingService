@@ -1,8 +1,19 @@
 ﻿function appendShowSentFormsPage(element){
+    let showFormsPage = document.querySelector("#showFormsPage");
     
-    console.log(element)
+    let row = document.createElement("tr");
+    
+    let cell = document.createElement("td");
+    cell.textContent = element.title;
+    cell.setAttribute("class", "cell");
+    row.appendChild(cell);
 
-    console.log(element.title)
+    cell = document.createElement("td");
+    cell.textContent = element.questionList.length;
+    cell.setAttribute("class", "cell");
+    row.appendChild(cell);
+
+    showFormsPage.appendChild(row);
 }
 
 
@@ -13,8 +24,6 @@ function sendDataToSentForms(destination, data){
             if (xhr.readyState === 4 && xhr.status === 200) {
                 let result = JSON.parse(xhr.responseText);
 
-                console.log(result)
-                
                 result.forEach(element => {
                     appendShowSentFormsPage(element);
                 })
