@@ -40,9 +40,12 @@ CREATE TABLE answers(
 	answer_id SERIAL,
 	question_id INT NOT NULL,
 	answer_text TEXT,
+	user_id INT NOT NULL,
 	PRIMARY KEY(answer_id),
 	FOREIGN KEY (question_id)
-	REFERENCES questions(question_id)
+	REFERENCES questions(question_id),
+	FOREIGN KEY (user_id)
+	REFERENCES users(user_id)
 );
 
 CREATE TABLE users_forms_connect(

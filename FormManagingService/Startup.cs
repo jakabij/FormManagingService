@@ -42,7 +42,7 @@ namespace FormManagingService
             services.AddScoped<IUsersService, SQLUsersService>();
             services.AddScoped<IFormsService, SQLFormsService>();
             services.AddScoped<IUsersFormsConnectionController, SQLUsersFormsConnectionController>();
-
+            services.AddScoped<IAnswerService, SQLAnswerService>();
 
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie

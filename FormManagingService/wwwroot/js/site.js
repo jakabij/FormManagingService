@@ -1,5 +1,50 @@
-﻿function sendDataToUsersFormsConnection(destination, data){
+﻿function SendDataToAnswer(destination, data){
     let xhr = new XMLHttpRequest();
+    if (xhr != null) {
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+               let result = JSON.parse(xhr.responseText);
+
+               let block = document.querySelector("#showDetailsOfTheFormPage");
+               block.setAttribute("style","display: none");
+
+               let usersAnswers = document.querySelector("#usersAnswers");
+               usersAnswers.setAttribute("style", "display: unset");
+
+                result.forEach(answer => {
+                    let answerElement = document.createElement("h3");
+                    answerElement.textContent = answer.questionText;
+
+                    usersAnswers.appendChild(answerElement);
+                    usersAnswers.appendChild(document.createElement("br"));
+
+                    answerElement = document.createElement("a");
+                    answerElement.textContent = answer.answerText;
+
+                    usersAnswers.appendChild(answerElement);
+                    usersAnswers.appendChild(document.createElement("br"));
+                })
+            }
+        }
+        xhr.open('POST', destination, true);
+        xhr.send(data);
+    }
+}
+
+
+function getAnswersForQuestionsFromOneUser(userID, formID){
+    let data = new FormData();
+    data.append("userID", userID);
+    data.append("formID", formID);
+
+    SendDataToAnswer("Answer/getAnswersForQuestionsFromOneUser", data);
+}
+
+
+function sendDataToUsersFormsConnection(destination, data){
+    let formID = data.get("formID");
+    let xhr = new XMLHttpRequest();
+
     if (xhr != null) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -25,10 +70,13 @@
                     cell.textContent = user.isFilledTheForm;
                     if(user.isFilledTheForm === true){
                         cell.setAttribute("style","color: darkolivegreen");
+                        cell.addEventListener("click", () => {
+                            getAnswersForQuestionsFromOneUser(user.userID, formID);
+                        });
                     }else{
                         cell.setAttribute("style","color: firebrick");
                     }
-                    
+
                     cell.setAttribute("class", "cell");
 
                     row.appendChild(cell);
