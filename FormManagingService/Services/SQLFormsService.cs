@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using FormManagingService.Models;
 
 namespace FormManagingService.Services
 {
@@ -109,6 +110,49 @@ namespace FormManagingService.Services
             TickFormIsSent(adminID, formID);    //set the form's attribute to false. Alias the form making is completed.
 
             return notFoundUsers;
+        }
+
+
+        public List<QuestionModel> GetallQuestionForForm(int formID)
+        {
+            List<QuestionModel> questions = new List<QuestionModel>();
+            using var command = _connection.CreateCommand();
+
+            command.CommandText = $"SELECT * FROM questions WHERE form_id = {formID}";
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                int questionID = Convert.ToInt32(reader["question_id"]);
+                string questionText = reader["question_title"].ToString();
+
+                QuestionModel question = new QuestionModel(questionID, formID, questionText);
+                questions.Add(question);
+            }
+
+            return questions;
+        }
+
+
+        public List<FormModel> GetAllFormsForAdmin(int adminID)
+        {
+            List<FormModel> userForms = new List<FormModel>(); 
+            using var command = _connection.CreateCommand();
+
+            command.CommandText = $"SELECT * FROM forms WHERE admin_id = {adminID}";
+
+           
+            using var reader = command.ExecuteReader();
+            while(reader.Read())
+            {
+                int formID = Convert.ToInt32(reader["form_id"]);
+                string formTitle = reader["form_title"].ToString();
+
+                FormModel form = new FormModel(formID, adminID, formTitle);
+                userForms.Add(form);
+            }
+            
+            return userForms;
         }
     }
 }

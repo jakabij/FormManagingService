@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FormManagingService.Services;
+using FormManagingService.Models;
 
 namespace FormManagingService.Controllers
 {
@@ -58,6 +59,20 @@ namespace FormManagingService.Controllers
             List<string> notFoundUsers = _sqlFormService.SendFormToUsers(userEmails, adminID);
 
             return Json(notFoundUsers);
+        }
+
+
+        public ActionResult SentForms()
+        {
+            int adminID = Convert.ToInt32(Request.Form["adminID"]);
+            List<FormModel> userForms = _sqlFormService.GetAllFormsForAdmin(adminID);
+
+            foreach (var form in userForms)
+            {
+                form.questionList = _sqlFormService.GetallQuestionForForm(form.FormID);
+            }
+
+            return Json(userForms);
         }
     }
 }
