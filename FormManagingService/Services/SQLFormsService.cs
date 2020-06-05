@@ -166,10 +166,13 @@ namespace FormManagingService.Services
 
             foreach(var formID in formIDsForUser)
             {
-                forms.Add(GetFormByID(formID));
+                var form = GetFormByID(formID);
+                form.questionList = GetallQuestionForForm(formID);
+
+                forms.Add(form);
             }
 
-            return SetFormsFillings(forms, userID); ;
+            return SetFormsFillings(forms, userID);
         }
 
 

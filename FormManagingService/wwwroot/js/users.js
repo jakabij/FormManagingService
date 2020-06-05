@@ -3,8 +3,35 @@ let currentProfileID = null;
 let currentProfileIsAdmin = false;
 
 
-function fillForm(){
-    console.log("FILL THAT DAMN THING")
+function sendAnswers(){
+    console.log("To be continued")
+}
+
+
+function fillForm(form){
+    let pendingFormsPage = document.querySelector("#userPendingFormTable");
+    pendingFormsPage.setAttribute("style","display: none");
+
+    let formFillingPage = document.querySelector("#formFillingPage");
+    formFillingPage.setAttribute("style", "display: unset");
+
+    let counter = 0;
+    form.questionList.forEach(question =>{
+        formFillingPage.appendChild(document.createElement("br"));
+
+        let questionText = document.createElement("a");
+        questionText.textContent = question.title;
+
+        formFillingPage.appendChild(questionText);
+        formFillingPage.appendChild(document.createElement("br"));
+
+        let input = document.createElement("input");
+        let inputID = "answer" + counter;
+        input.setAttribute("id", inputID);
+
+        formFillingPage.appendChild(input);
+        formFillingPage.appendChild(document.createElement("br"));
+    })
 }
 
 
@@ -14,6 +41,10 @@ function sendDataToFormsToShowPendingForms(destination, data){
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                let forms = JSON.parse(xhr.responseText);
+
+
+                console.log(forms)
+
                let pendingFormsPage = document.querySelector("#userPendingFormTable");
                 
                forms.forEach(form => {
@@ -35,7 +66,9 @@ function sendDataToFormsToShowPendingForms(destination, data){
                     if(form.isFilledOut === false){
                         cell = document.createElement("td");
                         cell.textContent = "Click to fill it";
-                        cell.addEventListener("click", fillForm);
+                        cell.addEventListener("click", () => {
+                            fillForm(form);
+                        });
                         row.appendChild(cell);
                     }
 
