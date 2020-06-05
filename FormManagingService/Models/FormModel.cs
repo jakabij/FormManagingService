@@ -12,6 +12,8 @@ namespace FormManagingService.Models
         public string Title { get; set; }
 
         public List<QuestionModel> questionList { get; set; }
+        public bool IsFilledOut { get; set; }
+
 
         public FormModel(int formID, int adminID, string title)
         {
@@ -19,6 +21,15 @@ namespace FormManagingService.Models
             AdminID = adminID;
             Title = title;
             questionList = new List<QuestionModel>();
+        }
+
+        public FormModel(int formID, int adminID, string title, bool isFilledOut)
+        {
+            FormID = formID;
+            AdminID = adminID;
+            Title = title;
+            questionList = new List<QuestionModel>();
+            IsFilledOut = isFilledOut;
         }
     }
 }

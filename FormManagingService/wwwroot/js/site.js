@@ -215,7 +215,8 @@ function showSentFormsPage(){
     showFormsPage.setAttribute("style", "display: unset");
 
     let data = new FormData();
-    data.append("adminID", currentProfileID);
+    data.append("userID", currentProfileID);
+    data.append("isAdmin", currentProfileIsAdmin);
 
     sendDataToSentForms("Form/SentForms", data);
 }

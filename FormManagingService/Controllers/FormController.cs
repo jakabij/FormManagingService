@@ -64,15 +64,25 @@ namespace FormManagingService.Controllers
 
         public ActionResult SentForms()
         {
-            int adminID = Convert.ToInt32(Request.Form["adminID"]);
-            List<FormModel> userForms = _sqlFormService.GetAllFormsForAdmin(adminID);
+            int adminID = Convert.ToInt32(Request.Form["userID"]);
 
-            foreach (var form in userForms)
+            List<FormModel> adminForms = _sqlFormService.GetAllFormsForAdmin(adminID);
+
+            foreach (var form in adminForms)
             {
                 form.questionList = _sqlFormService.GetallQuestionForForm(form.FormID);
             }
 
-            return Json(userForms);
+            return Json(adminForms);
+        }
+
+
+        public ActionResult GetPendingForms()
+        {
+            int userID = Convert.ToInt32(Request.Form["userID"]);
+            var forms = _sqlFormService.GetAllFormsForUser(userID);
+
+            return Json(forms);
         }
     }
 }

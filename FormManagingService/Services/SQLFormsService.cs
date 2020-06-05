@@ -134,12 +134,13 @@ namespace FormManagingService.Services
         }
 
 
-        public List<FormModel> GetAllFormsForAdmin(int adminID)
+        public List<FormModel> GetAllFormsForAdmin(int userID)
         {
             List<FormModel> userForms = new List<FormModel>(); 
+
             using var command = _connection.CreateCommand();
 
-            command.CommandText = $"SELECT * FROM forms WHERE admin_id = {adminID}";
+            command.CommandText = $"SELECT * FROM forms WHERE admin_id = {userID}";
 
            
             using var reader = command.ExecuteReader();
@@ -148,11 +149,69 @@ namespace FormManagingService.Services
                 int formID = Convert.ToInt32(reader["form_id"]);
                 string formTitle = reader["form_title"].ToString();
 
-                FormModel form = new FormModel(formID, adminID, formTitle);
+                FormModel form = new FormModel(formID, userID, formTitle);
                 userForms.Add(form);
             }
             
             return userForms;
+        }
+
+
+        public List<FormModel> GetAllFormsForUser(int userID)
+        {
+            List<FormModel> forms = new List<FormModel>();
+            SQLUsersFormsConnectionController sQLUsersFormsConnection = new SQLUsersFormsConnectionController(_connection);
+
+            List<int> formIDsForUser = sQLUsersFormsConnection.GetFormIdsForUser(userID);
+
+            foreach(var formID in formIDsForUser)
+            {
+                forms.Add(GetFormByID(formID));
+            }
+
+            return SetFormsFillings(forms, userID); ;
+        }
+
+
+        public FormModel GetFormByID(int formID)
+        {
+            using var command = _connection.CreateCommand();
+
+            command.CommandText = $"SELECT * FROM forms WHERE form_id = {formID}";
+
+            using var reader = command.ExecuteReader();
+            reader.Read();
+
+            int adminID = Convert.ToInt32(reader["admin_id"]);
+            string title = reader["form_title"].ToString();
+
+            return new FormModel(formID, adminID, title);
+        }
+
+
+
+        public bool GetFormsFillingValue(FormModel form, int userID)
+        {
+            using var command = _connection.CreateCommand();
+
+            command.CommandText = $"SELECT form_is_filled FROM users_forms_connect WHERE form_id = {form.FormID} AND user_id = {userID}";
+
+
+            using var reader = command.ExecuteReader();
+            reader.Read();
+
+            return Convert.ToBoolean(reader["form_is_filled"]);
+        }
+
+
+        public List<FormModel> SetFormsFillings(List<FormModel> forms, int userID)
+        {
+            foreach(var form in forms)
+            {
+                form.IsFilledOut = GetFormsFillingValue(form, userID);
+            }
+
+            return forms;
         }
     }
 }

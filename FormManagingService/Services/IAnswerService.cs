@@ -9,6 +9,6 @@ namespace FormManagingService.Services
     public interface IAnswerService
     {
         public List<AnswerModel> GetAllAnswerFOrQuestions(int formID, int userID);
-        public AnswerModel GetAnswerForQuestion(int questionID, int userID);
+        public AnswerModel GetAnswerForQuestion(int questionID, int userID, string questionText);
     }
 }

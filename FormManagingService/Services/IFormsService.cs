@@ -12,6 +12,8 @@ namespace FormManagingService.Services
         public void CreateForm(int adminID, string title);
         public List<string> SendFormToUsers(List<string> emails, int adminID);
         public List<QuestionModel> GetallQuestionForForm(int formID);
-        public List<FormModel> GetAllFormsForAdmin(int adminID);
+        public List<FormModel> GetAllFormsForAdmin(int userID);
+        public List<FormModel> SetFormsFillings(List<FormModel> forms, int userID);
+        public List<FormModel> GetAllFormsForUser(int userID);
     }
 }

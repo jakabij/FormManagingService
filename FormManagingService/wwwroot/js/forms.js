@@ -201,11 +201,8 @@ function createFormPage(){          //in this page you can create forms and save
 
 
 function hideFormMakingHeader(){
-    // let header = document.querySelector("#headerBlock");
-
     let createFormHeader = document.querySelector("#createFormHeader");
-    // header.removeChild(createFormHeader);
-
+    
     createFormHeader.setAttribute("style","display: none");
 }
 

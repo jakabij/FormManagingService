@@ -74,5 +74,22 @@ namespace FormManagingService.Services
 
             return users;
         }
+
+
+        public List<int> GetFormIdsForUser(int userID)
+        {
+            List<int> formIds = new List<int>();
+            using var command = _connection.CreateCommand();
+
+            command.CommandText = $"SELECT form_id FROM users_forms_connect WHERE user_id = {userID}";
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                formIds.Add(Convert.ToInt32(reader["form_id"]));
+            }
+
+            return formIds;
+        }
     }
 }

@@ -3,6 +3,86 @@ let currentProfileID = null;
 let currentProfileIsAdmin = false;
 
 
+function fillForm(){
+    console.log("FILL THAT DAMN THING")
+}
+
+
+function sendDataToFormsToShowPendingForms(destination, data){
+    let xhr = new XMLHttpRequest();
+    if (xhr != null) {
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+               let forms = JSON.parse(xhr.responseText);
+               let pendingFormsPage = document.querySelector("#userPendingFormTable");
+                
+               forms.forEach(form => {
+                    let row = document.createElement("tr");
+
+                    let cell = document.createElement("td");
+                    cell.textContent = form.title;
+                    row.appendChild(cell);
+
+                    cell = document.createElement("td");
+                    cell.textContent = form.isFilledOut;
+                    if(form.isFilledOut === false){
+                        cell.setAttribute("style","color: red");
+                    }else{
+                        cell.setAttribute("style","color: green");
+                    }
+                    row.appendChild(cell);
+
+                    if(form.isFilledOut === false){
+                        cell = document.createElement("td");
+                        cell.textContent = "Click to fill it";
+                        cell.addEventListener("click", fillForm);
+                        row.appendChild(cell);
+                    }
+
+                    pendingFormsPage.appendChild(row);
+               })
+               
+            }
+        }
+        xhr.open('POST', destination, true);
+        xhr.send(data);
+    }
+}
+
+
+function showPendingFormsPage(){
+    let pendingFormsPage = document.querySelector("#userPendingFormTable");
+    pendingFormsPage.setAttribute("style", "display: unset");
+
+    let data = new FormData();
+    data.append("userID", currentProfileID);
+
+    sendDataToFormsToShowPendingForms("Form/GetPendingForms", data);
+}
+
+
+function hidePendingFormsHeader(){
+    let header = document.querySelector("#headerBlock");
+    let pendingFormsHeader = document.querySelector("#pendingFormsHeader");
+
+    header.removeChild(pendingFormsHeader);
+}
+
+
+function showPendingFormsHeader(){
+    let header = document.querySelector("#headerBlock");
+
+    let pendingFormsHeader = document.createElement("a");
+    pendingFormsHeader.textContent = "Show Pending Forms"
+    pendingFormsHeader.setAttribute("class", "header");
+    pendingFormsHeader.setAttribute("style","display: unset");
+    pendingFormsHeader.setAttribute("id","pendingFormsHeader");
+    pendingFormsHeader.addEventListener("click", showPendingFormsPage);
+
+    header.appendChild(pendingFormsHeader);
+}
+
+
 function showLoginHeader(){
     let loginHeader = document.querySelector("#loginHeader");
     loginHeader.setAttribute("style","display: unset");
@@ -23,6 +103,8 @@ function logout(){
 
     if(currentProfileIsAdmin){
         hideFormMakingHeader();
+    }else{
+        hidePendingFormsHeader();
     }
 
     let xhr = new XMLHttpRequest();
@@ -84,6 +166,8 @@ function sendDataToLogin(destination, data) {           //After we logged in we 
 
                     if(profileData[profileIsAdmin] === "False"){
                         currentProfileIsAdmin = false;
+                        showPendingFormsHeader();
+
                     }else{
                         currentProfileIsAdmin = true;
 
