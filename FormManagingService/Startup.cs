@@ -41,6 +41,8 @@ namespace FormManagingService
             });
             services.AddScoped<IUsersService, SQLUsersService>();
             services.AddScoped<IFormsService, SQLFormsService>();
+            services.AddScoped<IUsersFormsConnectionController, SQLUsersFormsConnectionController>();
+
 
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie

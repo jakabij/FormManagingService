@@ -49,6 +49,7 @@ CREATE TABLE users_forms_connect(
 	user_id INT NOT NULL,
 	form_id INT NOT NULL,
 	admin_id INT NOT NULL,
+	form_is_filled BOOL DEFAULT false,
 	FOREIGN KEY (user_id)
 	REFERENCES users(user_id),
 	FOREIGN KEY (form_id)
@@ -57,7 +58,10 @@ CREATE TABLE users_forms_connect(
 
 
 INSERT INTO users (user_name, user_email, user_password, user_is_admin)
-VALUES ('Admin', 'admin@admin.com', 'dnuOQa1GQMjo2g9/JbRVFjRoxLeRgD+YYtMFuHFhzlP3dLcQ', true);		/*pw = admin*/
+VALUES ('Admin', 'admin@admin.com', 'dnuOQa1GQMjo2g9/JbRVFjRoxLeRgD+YYtMFuHFhzlP3dLcQ', true);
 
 INSERT INTO users (user_name, user_email, user_password, user_is_admin)
-VALUES ('User', '1@1.com', 'aVi0WJCiT9A+8BnxKmp4mgBmMWpQo4XUL6Sw4p2SfcQf2Rpt', false);				/*pw = 1*/
+VALUES ('User', '1@1.com', 'aVi0WJCiT9A+8BnxKmp4mgBmMWpQo4XUL6Sw4p2SfcQf2Rpt', false);
+
+INSERT INTO users (user_name, user_email, user_password, user_is_admin)
+VALUES ('User2', '2@2.com', 'aVi0WJCiT9A+8BnxKmp4mgBmMWpQo4XUL6Sw4p2SfcQf2Rpt', false);
