@@ -31,6 +31,8 @@ function sendDataToFormsEmail(destination, data){
 
 
 function sendToUsers(form){
+    showSentFormsPageHeader();
+
     let data = new FormData();
     data.append("adminID", currentProfileID);
     data.append("emailCount", emailAdressCounter);
@@ -69,6 +71,9 @@ function addMoreEmail(){
 
 
 function showEmailAddingPage(){
+    hideSentFormsPageHeader();
+    hideFormMakingHeader();
+
     let emailAddingPage = document.querySelector("#emailAddingForm");
     emailAddingPage.setAttribute("style", "display: unset");
 
@@ -102,7 +107,7 @@ function showEmailAddingPage(){
 function hideFormMakingPage(){
     let formMakingPage = document.querySelector("#questionForms");
     
-    for(let count = 1; count < formMakingPage.childElementCount; count++){
+    for(let count = 1; count < (formMakingPage.childElementCount); count++){
         formMakingPage.removeChild(formMakingPage.children[count]);
     }
 
@@ -115,7 +120,7 @@ function sendDataToForms(destination, data){
     if (xhr != null) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                hideFormMakingHeader();
+                // hideFormMakingHeader();
                 hideFormMakingPage();
                 showEmailAddingPage();
             }
@@ -163,12 +168,35 @@ function addQuestion(formStack, counter){   //Generate the questions
 
     formStack.appendChild(question);
     formStack.appendChild(document.createElement("br"));
-    questionCounter += 1;
+    questionCounter ++;
+
+
+    console.log("Question number: "+questionCounter)
+}
+
+
+function hideCreateFormPage(){
+    let createFormPage = document.querySelector("#questionForms");
+
+    while(createFormPage.hasChildNodes()){
+        if(createFormPage.childElementCount === 1){
+            break;
+        }else{
+            createFormPage.removeChild(createFormPage.lastChild);
+        }
+        
+    }
+
+    createFormPage.setAttribute("style","display: none");
 }
 
 
 function createFormPage(){          //in this page you can create forms and save it to the database
     questionCounter = 0;
+
+    clearSentFormsPage();
+    hideAfterSendingEmailsPage();
+    hideDetailsOfTheFormPage();
 
     let createFormPage = document.querySelector("#questionForms");
     createFormPage.setAttribute("style","display: unset");

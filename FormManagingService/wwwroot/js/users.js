@@ -106,10 +106,6 @@ function sendDataToFormsToShowPendingForms(destination, data){
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                let forms = JSON.parse(xhr.responseText);
-
-
-                console.log(forms)
-
                let pendingFormsPage = document.querySelector("#userPendingFormTable");
                 
                forms.forEach(form => {
@@ -201,6 +197,7 @@ function logout(){
 
     if(currentProfileIsAdmin){
         hideFormMakingHeader();
+        hideAfterSendingEmailsPage();
     }else{
         hidePendingFormsHeader();
     }
@@ -269,6 +266,7 @@ function sendDataToLogin(destination, data) {           //After we logged in we 
                     }else{
                         currentProfileIsAdmin = true;
 
+                        showSentFormsPageHeader();
                         showFormMakingHeader();
                     }
                    

@@ -1,12 +1,22 @@
-﻿function SendDataToAnswer(destination, data){
+﻿function hideDetailsOfTheFormPage(){
+    let block = document.querySelector("#showDetailsOfTheFormPage");
+
+    while(block.hasChildNodes()){
+        block.removeChild(block.lastChild);
+    }
+
+    block.setAttribute("style","display: none");
+}
+
+
+function SendDataToAnswer(destination, data){
     let xhr = new XMLHttpRequest();
     if (xhr != null) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                let result = JSON.parse(xhr.responseText);
 
-               let block = document.querySelector("#showDetailsOfTheFormPage");
-               block.setAttribute("style","display: none");
+               hideDetailsOfTheFormPage();
 
                let usersAnswers = document.querySelector("#usersAnswers");
                usersAnswers.setAttribute("style", "display: unset");
@@ -70,14 +80,22 @@ function sendDataToUsersFormsConnection(destination, data){
                     cell.textContent = user.isFilledTheForm;
                     if(user.isFilledTheForm === true){
                         cell.setAttribute("style","color: darkolivegreen");
-                        cell.addEventListener("click", () => {
-                            getAnswersForQuestionsFromOneUser(user.userID, formID);
-                        });
                     }else{
                         cell.setAttribute("style","color: firebrick");
                     }
 
                     cell.setAttribute("class", "cell");
+
+                    row.appendChild(cell);
+
+
+                    if(user.isFilledTheForm === true){
+                        cell = document.createElement("td");
+                        cell.textContent = "See answers";
+                        cell.addEventListener("click", () => {
+                            getAnswersForQuestionsFromOneUser(user.userID, formID);
+                        });
+                    }
 
                     row.appendChild(cell);
 
@@ -101,7 +119,10 @@ function addUsersWhoGotTheForm(formID){
 
 
 function showAllUsersAsDetail(element){
+    hideSentFormsPage();
+
     let showDetailsOfTheFormPage = document.querySelector("#showDetailsOfTheFormPage");
+    showDetailsOfTheFormPage.setAttribute("style", "display: unset");
 
     let header = document.createElement("h1");
     header.textContent = element.title;
@@ -194,7 +215,8 @@ function sendDataToSentForms(destination, data){
 
 function hideAfterSendingEmailsPage(){
     let afterSendingPage = document.querySelector("#afterSendingForms");
-    while(afterSendingPage.firstChild){
+
+    while(afterSendingPage.hasChildNodes()){
         afterSendingPage.removeChild(afterSendingPage.lastChild);
     }
 
@@ -203,13 +225,26 @@ function hideAfterSendingEmailsPage(){
 
 
 function hideSentFormsPage(){
+    clearSentFormsPage();
     let showFormsPage = document.querySelector("#showFormsPage");
     showFormsPage.setAttribute("style", "display: none");
 }
 
 
+function clearSentFormsPage(){
+    let showFormsPage = document.querySelector("#showFormsPage");
+
+    while(showFormsPage.hasChildNodes()){
+        showFormsPage.removeChild(showFormsPage.lastChild);
+    }
+}
+
+
 function showSentFormsPage(){
+    clearSentFormsPage();
     hideAfterSendingEmailsPage();
+    hideDetailsOfTheFormPage();
+    hideCreateFormPage();
 
     let showFormsPage = document.querySelector("#showFormsPage");
     showFormsPage.setAttribute("style", "display: unset");
@@ -260,9 +295,6 @@ function afterSendingEmails(wrongEmails){
             text.setAttribute("style", "color: red");
 
             afterSendingPage.appendChild(text);
-            afterSendingPage.appendChild(document.createElement("br"));
         })   
     }
-
-    showSentFormsPageHeader();
 }
