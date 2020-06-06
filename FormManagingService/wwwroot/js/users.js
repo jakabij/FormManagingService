@@ -3,8 +3,40 @@ let currentProfileID = null;
 let currentProfileIsAdmin = false;
 
 
-function sendAnswers(){
-    console.log("To be continued")
+function sendDataToAddAnswers(destination, data){
+    let xhr = new XMLHttpRequest();
+    if (xhr != null) {
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                let result = JSON.parse(xhr.responseText);
+                alert(result);
+               
+            }
+        }
+        xhr.open('POST', destination, true);
+        xhr.send(data);
+    }
+}
+
+
+function sendAnswers(form){
+    let data = new FormData();
+
+    data.append("counter", form.counter.value);
+    data.append("userID", currentProfileID);
+    data.append("formID", form.formID.value);
+
+    for(let count = 0; count < form.counter.value; count++){
+        let dataElementName = "answer" + count;
+        let questionIDFromform = "question" + count;
+
+        let answer = document.forms["formFillingPage"][dataElementName].value;
+        let questionID = document.forms["formFillingPage"][questionIDFromform].value;
+        
+        let questionIDWithAnswerID = [answer, questionID];
+        data.append(dataElementName, questionIDWithAnswerID);
+    }
+    sendDataToAddAnswers("Answer/AddAnswers", data);
 }
 
 
@@ -26,12 +58,45 @@ function fillForm(form){
         formFillingPage.appendChild(document.createElement("br"));
 
         let input = document.createElement("input");
+        input.setAttribute("type", "text");
         let inputID = "answer" + counter;
         input.setAttribute("id", inputID);
+        input.setAttribute("name", inputID)
 
         formFillingPage.appendChild(input);
         formFillingPage.appendChild(document.createElement("br"));
+
+        //save questionIDs too
+        let questionIDToSave = document.createElement("input");
+        questionIDToSave.setAttribute("type","text");
+        questionIDToSave.setAttribute("style", "display: none");
+        let questionID = "question" + counter;
+        questionIDToSave.setAttribute("id", questionID);
+        questionIDToSave.setAttribute("name", questionID);
+        questionIDToSave.setAttribute("value", question.questionID);
+
+        formFillingPage.appendChild(questionIDToSave);
+
+        counter++;
     })
+
+    let counterToSave = document.createElement("input");
+    counterToSave.setAttribute("type","text");
+    counterToSave.setAttribute("style", "display: none");
+    counterToSave.setAttribute("id", "counter");
+    counterToSave.setAttribute("name", "counter");
+    counterToSave.setAttribute("value", counter);
+
+    formFillingPage.appendChild(counterToSave);
+
+    let formID = document.createElement("input");
+    formID.setAttribute("type","text");
+    formID.setAttribute("style", "display: none");
+    formID.setAttribute("id", "formID");
+    formID.setAttribute("name", "formID");
+    formID.setAttribute("value", form.formID);
+
+    formFillingPage.appendChild(formID);
 }
 
 

@@ -10,5 +10,6 @@ namespace FormManagingService.Services
     {
         public List<AnswerModel> GetAllAnswerFOrQuestions(int formID, int userID);
         public AnswerModel GetAnswerForQuestion(int questionID, int userID, string questionText);
+        public void AddAnswersToDatabase(List<string> allAnswerText, List<int> allQuestionID, int userID, int formID);
     }
 }

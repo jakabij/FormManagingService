@@ -45,5 +45,21 @@ namespace FormManagingService.Services
 
             return allAnswers;
         }
+
+
+        public void AddAnswersToDatabase(List<string> allAnswerText, List<int> allQuestionID, int userID, int formID)
+        {
+            for(int count = 0; count < allAnswerText.Count; count++)
+            {
+                using var command = _connection.CreateCommand();
+
+                command.CommandText = $"INSERT INTO answers (question_id, answer_text, user_id) VALUES ('{allQuestionID[count]}', '{allAnswerText[count]}', '{userID}')";
+
+                command.ExecuteNonQuery();
+            }
+
+            SQLUsersFormsConnectionController sQLUsersFormsConnection = new SQLUsersFormsConnectionController(_connection);
+            sQLUsersFormsConnection.SetUserFilledTheForm(formID, userID);
+        }
     }
 }

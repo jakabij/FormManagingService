@@ -91,5 +91,15 @@ namespace FormManagingService.Services
 
             return formIds;
         }
+
+
+        public void SetUserFilledTheForm(int formID, int userID)
+        {
+            using var command = _connection.CreateCommand();
+
+            command.CommandText = $"UPDATE users_forms_connect SET form_is_filled = true WHERE user_id = '{userID}' AND form_id = '{formID}'";
+
+            command.ExecuteNonQuery();
+        }
     }
 }

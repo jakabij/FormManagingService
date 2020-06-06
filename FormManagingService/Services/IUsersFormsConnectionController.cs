@@ -9,5 +9,6 @@ namespace FormManagingService.Services
     public interface IUsersFormsConnectionController
     {
         public List<UserModel> GetUserWhoGotTheForm(int formID);
+        public void SetUserFilledTheForm(int formID, int userID);
     }
 }
