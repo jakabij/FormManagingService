@@ -268,6 +268,7 @@ function logout(){
         hideAfterSendingEmailsPage();
         hideSentFormsPageHeader();
         hideSentFormsPage();
+        hideUserAnswers();
     }else{
         hidePendingFormsHeader();
         clearPendingFormsPage();

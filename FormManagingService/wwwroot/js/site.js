@@ -12,6 +12,17 @@ function hideDetailsOfTheFormPage(){
 }
 
 
+function hideUserAnswers(){
+    let usersAnswers = document.querySelector("#usersAnswers");
+
+    while(usersAnswers.hasChildNodes()){
+        usersAnswers.removeChild(usersAnswers.lastChild);
+    }
+
+    usersAnswers.setAttribute("style", "display: none");
+}
+
+
 function SendDataToAnswer(destination, data){
     let xhr = new XMLHttpRequest();
     if (xhr != null) {
@@ -27,14 +38,17 @@ function SendDataToAnswer(destination, data){
                 result.forEach(answer => {
                     let answerElement = document.createElement("h3");
                     answerElement.textContent = answer.questionText;
+                    answerElement.setAttribute("style", "padding-left: 20px")
 
                     usersAnswers.appendChild(answerElement);
                     usersAnswers.appendChild(document.createElement("br"));
 
                     answerElement = document.createElement("a");
                     answerElement.textContent = answer.answerText;
+                    answerElement.setAttribute("style", "padding-left: 40px")
 
                     usersAnswers.appendChild(answerElement);
+                    usersAnswers.appendChild(document.createElement("br"));
                     usersAnswers.appendChild(document.createElement("br"));
                 })
             }
@@ -161,29 +175,56 @@ function sendDataToUsersFormsConnection(destination, data){
 
                let userTable = document.querySelector("#tableForUsersWhoGotTheForm");
 
+                let userTableBody = document.createElement("tbody");
+
+                let row = document.createElement("tr");
+                
+                let cell = document.createElement("td");
+                cell.textContent = "Username";
+                cell.setAttribute("class", "headerCell");
+                row.appendChild(cell);
+
+                cell = document.createElement("td");
+                cell.textContent = "E-mail";
+                cell.setAttribute("class", "headerCell");
+                row.appendChild(cell);
+
+                cell = document.createElement("td");
+                cell.textContent = "Filled the form";
+                cell.setAttribute("class", "headerCell");
+                row.appendChild(cell);
+
+                cell = document.createElement("td");
+                cell.textContent = "";
+                cell.setAttribute("class", "emptyCell");
+                row.appendChild(cell);
+
+                userTableBody.appendChild(row);
+
                 users.forEach(user => {
                     let row = document.createElement("tr");
                     let cell = document.createElement("td");
                     cell.textContent = user.username;
-                    cell.setAttribute("class", "cell");
+                    cell.setAttribute("class", "cell2");
 
                     row.appendChild(cell);
                     
                     cell = document.createElement("td");
                     cell.textContent = user.email;
-                    cell.setAttribute("class", "cell");
+                    cell.setAttribute("class", "cell2");
 
                     row.appendChild(cell);
 
                     cell = document.createElement("td");
-                    cell.textContent = user.isFilledTheForm;
                     if(user.isFilledTheForm === true){
-                        cell.setAttribute("style","color: darkolivegreen");
+                        cell.setAttribute("style","background-color: darkolivegreen");
+                        cell.textContent = "YES";
                     }else{
-                        cell.setAttribute("style","color: firebrick");
+                        cell.setAttribute("style","background-color: firebrick");
+                        cell.textContent = "NO";
                     }
 
-                    cell.setAttribute("class", "cell");
+                    cell.setAttribute("class", "cell2");
 
                     row.appendChild(cell);
 
@@ -191,6 +232,7 @@ function sendDataToUsersFormsConnection(destination, data){
                     if(user.isFilledTheForm === true){
                         cell = document.createElement("td");
                         cell.textContent = "See answers";
+                        cell.setAttribute("class", "cell2");
                         cell.addEventListener("click", () => {
                             getAnswersForQuestionsFromOneUser(user.userID, formID);
                         });
@@ -198,7 +240,9 @@ function sendDataToUsersFormsConnection(destination, data){
 
                     row.appendChild(cell);
 
-                    userTable.appendChild(row);
+                    userTableBody.appendChild(row);
+
+                    userTable.appendChild(userTableBody);
                 })
                
                 
@@ -387,6 +431,7 @@ function showSentFormsPage(){
     hideAfterSendingEmailsPage();
     hideDetailsOfTheFormPage();
     hideCreateFormPage();
+    hideUserAnswers();
 
     let showFormsPage = document.querySelector("#showFormsPage");
     showFormsPage.setAttribute("style", "display: unset");

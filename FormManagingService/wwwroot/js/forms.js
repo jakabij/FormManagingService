@@ -203,6 +203,8 @@ function createFormPage(){          //in this page you can create forms and save
     clearSentFormsPage();
     hideAfterSendingEmailsPage();
     hideDetailsOfTheFormPage();
+    hideSentFormsPage();
+    hideUserAnswers();
 
     let createFormPage = document.querySelector("#questionForms");
     createFormPage.setAttribute("style","display: unset");

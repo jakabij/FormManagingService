@@ -30,6 +30,13 @@
     width: 45%;
 }
 
+
+.cell2{
+    border:solid;
+    width: 35%;
+}
+
+
 .emptyCell{
     border: none;
     width: 45%;
