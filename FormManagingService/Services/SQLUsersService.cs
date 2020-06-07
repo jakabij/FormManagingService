@@ -31,9 +31,17 @@ namespace FormManagingService.Services
 
             using var reader = command.ExecuteReader();
 
-            reader.Read();
-            int userId = Convert.ToInt32(reader["user_id"]);
-            return userId;
+
+            try
+            {
+                reader.Read();
+                int userId = Convert.ToInt32(reader["user_id"]);
+                return userId;
+            }
+            catch
+            { 
+                return -1;
+            }
         }
 
         public bool UserIsAdmin(int userID)

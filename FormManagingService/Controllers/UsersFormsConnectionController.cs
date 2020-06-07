@@ -32,5 +32,31 @@ namespace FormManagingService.Controllers
 
             return Json(users);
         }
+
+        public ActionResult AppendEmails()
+        {
+            List<string> userEmails = new List<string>();
+            List<string> wrongEmails = new List<string>();
+            int counter = Convert.ToInt32(Request.Form["counter"]);
+            int formID = Convert.ToInt32(Request.Form["formID"]);
+            int adminID = Convert.ToInt32(Request.Form["adminID"]);
+
+
+            for (int i = 0; i < counter; i++)
+            {
+                string dataID = "moreEmail" + i;
+                Console.WriteLine(Request.Form[dataID].ToString());
+                userEmails.Add(Request.Form[dataID].ToString());
+            }
+
+            foreach(var email in userEmails)
+            {
+                string result =_sqlFormsUsersService.SendFormToUsers(email, adminID, formID);
+                if (result != null)
+                    wrongEmails.Add(result);
+            }
+
+             return Json(wrongEmails);
+        }
     }
 }

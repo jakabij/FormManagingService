@@ -10,5 +10,6 @@ namespace FormManagingService.Services
     {
         public List<UserModel> GetUserWhoGotTheForm(int formID);
         public void SetUserFilledTheForm(int formID, int userID);
+        public string SendFormToUsers(string userEmail, int adminID, int formID);
     }
 }

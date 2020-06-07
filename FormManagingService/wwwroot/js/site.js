@@ -1,4 +1,7 @@
-﻿function hideDetailsOfTheFormPage(){
+﻿let emailCounter = 0;
+
+
+function hideDetailsOfTheFormPage(){
     let block = document.querySelector("#showDetailsOfTheFormPage");
 
     while(block.hasChildNodes()){
@@ -48,6 +51,102 @@ function getAnswersForQuestionsFromOneUser(userID, formID){
     data.append("formID", formID);
 
     SendDataToAnswer("Answer/getAnswersForQuestionsFromOneUser", data);
+}
+
+
+function sendDataToAppendEmails(destination, data){
+    let xhr = new XMLHttpRequest();
+    if (xhr != null) {
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                let result = JSON.parse(xhr.responseText);
+                hideDetailsOfTheFormPage();
+                afterSendingEmails(result);
+            }
+        }
+        xhr.open('POST', destination, true);
+        xhr.send(data);
+    }
+}
+
+
+function removeAppendEmailsButton(){
+    let removeElement = document.querySelector("#appendEmailsButton");
+
+    if(removeElement !== null){
+        let form = document.querySelector("#moreEmailForm");
+
+        let breaks = document.querySelector("#break1");
+        form.removeChild(breaks);
+
+        breaks = document.querySelector("#break2");
+        form.removeChild(breaks);
+
+        form.removeChild(removeElement);
+    }
+}
+
+
+function sendToMoreUser(formID){
+    removeAppendEmailsButton();
+    let showDetailsOfTheFormPage = document.querySelector("#showDetailsOfTheFormPage");
+    showDetailsOfTheFormPage.appendChild(document.createElement("br"));
+
+    if(emailCounter === 0){
+        let moreEmailForm = document.createElement("form");
+        moreEmailForm.setAttribute("id", "moreEmailForm");
+        moreEmailForm.setAttribute("style", "display: unset");
+        showDetailsOfTheFormPage.appendChild(moreEmailForm);
+    }
+
+    let emailText = document.createElement("a");
+    emailText.textContent = "Email: ";
+
+    moreEmailForm.appendChild(emailText);
+    moreEmailForm.appendChild(document.createElement("br"));
+
+    let input = document.createElement("input");
+    input.setAttribute("type", "text");
+    let inputID = "moreEmail" + emailCounter;
+    input.setAttribute("id", inputID);
+    input.setAttribute("name", inputID);
+
+    moreEmailForm.appendChild(input);
+    moreEmailForm.appendChild(document.createElement("br"));
+
+    let break1 = document.createElement("br");
+    break1.setAttribute("id","break1");
+    moreEmailForm.appendChild(break1);
+
+    break1 = document.createElement("br");
+    break1.setAttribute("id","break2");
+    moreEmailForm.appendChild(break1);
+
+    let confirmButton = document.createElement("input");
+    confirmButton.setAttribute("type", "button");
+    confirmButton.setAttribute("id", "appendEmailsButton");
+    confirmButton.value = "Send form to Email(s)";
+    confirmButton.addEventListener("click", () => {
+        let data = new FormData();
+
+        data.append("adminID", currentProfileID);
+        data.append("formID", formID);
+        data.append("counter", emailCounter);
+        for(let i = 0; i < emailCounter; i++){
+            inputID = "moreEmail" + i;
+
+            console.log("YEEET: "+ inputID)
+
+            data.append(inputID, document.forms["moreEmailForm"][inputID].value)
+        }
+
+        emailCounter = 0;
+        sendDataToAppendEmails("UsersFormsConnection/AppendEmails", data);
+    })
+
+    moreEmailForm.appendChild(confirmButton);
+
+    emailCounter++;     //ezt megnézni paraméter átadásos növelés során.
 }
 
 
@@ -102,6 +201,37 @@ function sendDataToUsersFormsConnection(destination, data){
                     userTable.appendChild(row);
                 })
                
+                
+
+
+
+
+
+
+
+                let showDetailsOfTheFormPage = document.querySelector("#showDetailsOfTheFormPage");
+                
+                showDetailsOfTheFormPage.appendChild(document.createElement("br"));
+
+                
+                let addMoreEmailButton = document.createElement("input");
+                addMoreEmailButton.setAttribute("type", "button");
+                addMoreEmailButton.setAttribute("value", "Click to send to more user");
+                addMoreEmailButton.setAttribute("id", "addToSendToMoreUserButton");
+                addMoreEmailButton.addEventListener("click", () => {
+                    sendToMoreUser(formID)
+                });
+
+                showDetailsOfTheFormPage.appendChild(addMoreEmailButton);
+               
+
+
+
+                //add more emails
+
+
+
+
             }
         }
         xhr.open('POST', destination, true);

@@ -101,5 +101,25 @@ namespace FormManagingService.Services
 
             command.ExecuteNonQuery();
         }
+
+        public string SendFormToUsers(string userEmail, int adminID, int formID)
+        {
+            SQLUsersService userService = new SQLUsersService(_connection);
+            var nonConvertedUserId = userService.GetUserId(userEmail);
+
+            if(nonConvertedUserId == -1)
+                return userEmail;
+
+            int userID = Convert.ToInt32(nonConvertedUserId);
+
+            using var command = _connection.CreateCommand();
+
+            command.CommandText = $"INSERT INTO users_forms_connect (user_id, form_id, admin_id) VALUES" +
+                        $"('{userID}', '{formID}', '{adminID}')";
+
+            command.ExecuteNonQuery();
+
+            return null;
+        }
     }
 }
