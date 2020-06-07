@@ -9,6 +9,9 @@ function sendDataToAddAnswers(destination, data){
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 let result = JSON.parse(xhr.responseText);
+
+                clearFillFormPage();
+
                 alert(result);
                
             }
@@ -40,7 +43,23 @@ function sendAnswers(form){
 }
 
 
+function clearFillFormPage(){
+    let formFillingPage = document.querySelector("#formFillingPage");
+
+    while(formFillingPage.hasChildNodes()){
+        if(formFillingPage.childElementCount === 1){
+            break;
+        }
+
+        formFillingPage.removeChild(formFillingPage.lastChild)
+        formFillingPage.setAttribute("style", "display: none");
+    }
+}
+
+
 function fillForm(form){
+    clearFillFormPage();
+
     let pendingFormsPage = document.querySelector("#userPendingFormTable");
     pendingFormsPage.setAttribute("style","display: none");
 
@@ -106,6 +125,9 @@ function sendDataToFormsToShowPendingForms(destination, data){
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                let forms = JSON.parse(xhr.responseText);
+
+               clearFillFormPage();
+
                let pendingFormsPage = document.querySelector("#userPendingFormTable");
                 
                forms.forEach(form => {
@@ -144,7 +166,20 @@ function sendDataToFormsToShowPendingForms(destination, data){
 }
 
 
+function clearPendingFormsPage(){
+    let pendingFormsPage = document.querySelector("#userPendingFormTable");
+    
+    if(pendingFormsPage !== null){
+        while(pendingFormsPage.hasChildNodes()){
+            pendingFormsPage.removeChild(pendingFormsPage.lastChild);
+        }
+    }
+}
+
+
 function showPendingFormsPage(){
+    clearPendingFormsPage();
+
     let pendingFormsPage = document.querySelector("#userPendingFormTable");
     pendingFormsPage.setAttribute("style", "display: unset");
 
