@@ -279,8 +279,8 @@ function showAllUsersAsDetail(element){
 
 
 function appendShowSentFormsPage(element){
-    let showFormsPage = document.querySelector("#showFormsPage");
-    
+    let tableBody = document.querySelector("#showFormsPageTbody");
+
     let row = document.createElement("tr");
     
     let cell = document.createElement("td");
@@ -290,6 +290,7 @@ function appendShowSentFormsPage(element){
 
     cell = document.createElement("td");
     cell.textContent = element.questionList.length;
+    cell.setAttribute("style", "text-align: center");
     cell.setAttribute("class", "cell");
     row.appendChild(cell);
 
@@ -301,25 +302,36 @@ function appendShowSentFormsPage(element){
     });
     row.appendChild(cell);
 
-    showFormsPage.appendChild(row);
+    tableBody.appendChild(row);
 }
 
 
 function addFirstHeaderToTable(){
     let showFormsPage = document.querySelector("#showFormsPage");
+    
+    let tableBody = document.createElement("tbody");
+    tableBody.setAttribute("id", "showFormsPageTbody");
+
     let row = document.createElement("tr");
     
     let cell = document.createElement("td");
     cell.textContent = "Form title";
-    cell.setAttribute("class", "cell");
+    cell.setAttribute("class", "headerCell");
     row.appendChild(cell);
 
     cell = document.createElement("td");
     cell.textContent = "Number of Questions";
-    cell.setAttribute("class", "cell");
+    cell.setAttribute("class", "headerCell");
     row.appendChild(cell);
 
-    showFormsPage.appendChild(row);
+    cell = document.createElement("td");
+    cell.textContent = "";
+    cell.setAttribute("class", "emptyCell");
+    row.appendChild(cell);
+
+    tableBody.appendChild(row);
+
+    showFormsPage.appendChild(tableBody);
 }
 
 
@@ -391,7 +403,9 @@ function hideSentFormsPageHeader(){
     let header = document.querySelector("#headerBlock");
     let showFormsPageHeader = document.querySelector("#showFormsPageHeader");
     
-    header.removeChild(showFormsPageHeader);
+    if(header !== null){
+        header.removeChild(showFormsPageHeader);
+    }   
 }
 
 

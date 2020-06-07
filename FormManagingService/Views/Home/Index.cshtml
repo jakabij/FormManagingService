@@ -1,8 +1,20 @@
 ﻿<header>
     <div id="headerBlock">
-        <a class="header" id="firstHeader">Main Page</a>
+        <a class="header" id="firstHeader"></a>
     </div>
     <br /> <br /> <br />
+
+    <div id="welcomePage">
+        <p>Hello there!</p>
+        <br />
+        <p>On this page you will find some forms that you could or need to fill for your Sender.</p>
+        <br />
+        <p>Make your first move and hit on the Register button.</p>
+        <br />
+        <p>Or if you are a registered old fellow hit hard on the Login button fellow!</p>
+        <br /> <br />
+        <p style="font-size: larger">Have a nice day!</p>
+    </div>
 
 
     <form id="registerForms" method="POST" style="display: none">
@@ -25,11 +37,11 @@
 
     <form id="loginForms" method="POST" style="display: none">
         Email: <br />
-        <input type="text" name="email" value="1@1.com">    @*admin@admin.com    1@1.com*@
+        <input type="text" name="email">    @*admin@admin.com    1@1.com*@
         <br />
 
         Password: <br />
-        <input type="text" name="password" value="1">   @*admin    1*@
+        <input type="text" name="password">   @*admin    1*@
 
         <br /> <br />
         <input type="button" name="button" value="login" onClick="login(this.form)">
@@ -41,7 +53,7 @@
     </form>
 
     <form id="emailAddingForm" style="display: none">
-        <input type="button" value="Send Form" onClick="sendToUsers(this.form)">
+        <input type="button" id="SavingButton" value="Send Form" onClick="sendToUsers(this.form)">
     </form>
 
     <div id="afterSendingForms" style="display: none"></div>
@@ -55,7 +67,8 @@
     <table id="userPendingFormTable"></table>
 
     <form id="formFillingPage" style="display: none">
-        <input type="button" value="Send Form" onClick="sendAnswers(this.form)">
+        <input id="SavingButton" type="button" value="Send Form" onClick="sendAnswers(this.form)">
     </form>
+
 
 </header>

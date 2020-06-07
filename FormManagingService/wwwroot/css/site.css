@@ -1,5 +1,7 @@
 ﻿#headerBlock{
     border: solid;
+    color: brown;
+    background: khaki;
 }
 
 #firstHeader {
@@ -15,7 +17,36 @@
     background-color: tan;
 }
 
+.headerCell{
+    color: steelblue;
+    font-size: x-large;
+    border:solid;
+    width: 45%;
+}
+
 
 .cell{
     border:solid;
+    width: 45%;
+}
+
+.emptyCell{
+    border: none;
+    width: 45%;
+}
+
+#SavingButton{
+    width: 100%;
+}
+
+#welcomePage{
+    padding-left: 40px;
+    font-size: x-large;
+    font-style: oblique;
+    font-family: initial;
+    color: brown;
+}
+
+body{
+    background-color: beige;
 }

@@ -31,6 +31,10 @@ function sendDataToFormsEmail(destination, data){
 
 
 function sendToUsers(form){
+    let header = document.querySelector("#logoutHeader");
+    header.setAttribute("style", "display: unset");
+    
+    showFormMakingHeader();
     showSentFormsPageHeader();
 
     let data = new FormData();
@@ -73,6 +77,7 @@ function addMoreEmail(){
 function showEmailAddingPage(){
     hideSentFormsPageHeader();
     hideFormMakingHeader();
+    hideLogoutHeader();
 
     let emailAddingPage = document.querySelector("#emailAddingForm");
     emailAddingPage.setAttribute("style", "display: unset");
@@ -83,6 +88,7 @@ function showEmailAddingPage(){
     addMoreEmailButton.setAttribute("type", "button");
     addMoreEmailButton.setAttribute("value", "Click to add more Email");
     addMoreEmailButton.setAttribute("id", "addMoreEmailButton");
+    addMoreEmailButton.setAttribute("style","margin-block-start: 20px; margin-inline-start: 75%")
     addMoreEmailButton.addEventListener("click", addMoreEmail);
 
     emailAddingPage.appendChild(addMoreEmailButton);
@@ -238,12 +244,18 @@ function hideFormMakingHeader(){
 function showFormMakingHeader(){
     let header = document.querySelector("#headerBlock");
 
-    let createFormHeader = document.createElement("a");
-    createFormHeader.textContent = "Create Form";
-    createFormHeader.setAttribute("class","header");
-    createFormHeader.setAttribute("style","display: unset");
-    createFormHeader.setAttribute("id","createFormHeader");
-    createFormHeader.addEventListener("click",createFormPage);
+    let createFormHeader = document.querySelector("#createFormHeader");
 
-    header.appendChild(createFormHeader);
+    if(createFormHeader === null){
+        createFormHeader = document.createElement("a");
+        createFormHeader.textContent = "Create Form";
+        createFormHeader.setAttribute("class","header");
+        createFormHeader.setAttribute("style","display: unset");
+        createFormHeader.setAttribute("id","createFormHeader");
+        createFormHeader.addEventListener("click",createFormPage);
+
+        header.appendChild(createFormHeader);
+    }
+
+    createFormHeader.setAttribute("style","display: unset");
 }

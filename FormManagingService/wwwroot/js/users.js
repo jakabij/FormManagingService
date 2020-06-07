@@ -129,35 +129,65 @@ function sendDataToFormsToShowPendingForms(destination, data){
                clearFillFormPage();
 
                let pendingFormsPage = document.querySelector("#userPendingFormTable");
-                
-               forms.forEach(form => {
-                    let row = document.createElement("tr");
+               let pendingFormTableBody = document.createElement("tbody");
 
-                    let cell = document.createElement("td");
+                let row = document.createElement("tr");
+
+                let cell = document.createElement("td");
+                cell.setAttribute("class","headerCell");
+                cell.textContent = "Form's Title";
+                row.appendChild(cell);
+
+                cell = document.createElement("td");
+                cell.setAttribute("class","headerCell");
+                cell.setAttribute("style", "text-align: center");
+                cell.textContent = "Form is filled";
+                row.appendChild(cell);
+
+                cell = document.createElement("td");
+                cell.setAttribute("class","emptyCell");
+                cell.textContent = "";
+                row.appendChild(cell);
+
+                pendingFormTableBody.appendChild(row);
+
+               forms.forEach(form => {
+                    row = document.createElement("tr");
+
+                    cell = document.createElement("td");
+                    cell.setAttribute("class","cell");
                     cell.textContent = form.title;
                     row.appendChild(cell);
 
                     cell = document.createElement("td");
-                    cell.textContent = form.isFilledOut;
+                    cell.setAttribute("class","cell");
                     if(form.isFilledOut === false){
-                        cell.setAttribute("style","color: red");
+                        cell.setAttribute("style","background-color: red; text-align: center");
+                        cell.textContent = "NO";
                     }else{
-                        cell.setAttribute("style","color: green");
+                        cell.setAttribute("style","background-color: green; text-align: center");
+                        cell.textContent = "YES";
                     }
                     row.appendChild(cell);
 
                     if(form.isFilledOut === false){
                         cell = document.createElement("td");
+                        cell.setAttribute("class","cell");
                         cell.textContent = "Click to fill it";
                         cell.addEventListener("click", () => {
                             fillForm(form);
                         });
                         row.appendChild(cell);
+                    }else{
+                        cell = document.createElement("td");
+                        cell.setAttribute("class","emptyCell");
+                        cell.textContent = "";
+                        row.appendChild(cell);
                     }
 
-                    pendingFormsPage.appendChild(row);
+                    pendingFormTableBody.appendChild(row);
                })
-               
+               pendingFormsPage.appendChild(pendingFormTableBody)
             }
         }
         xhr.open('POST', destination, true);
@@ -174,6 +204,8 @@ function clearPendingFormsPage(){
             pendingFormsPage.removeChild(pendingFormsPage.lastChild);
         }
     }
+
+    pendingFormsPage.setAttribute("style", "display: none");
 }
 
 
@@ -232,9 +264,14 @@ function logout(){
 
     if(currentProfileIsAdmin){
         hideFormMakingHeader();
+        hideFormMakingPage();
         hideAfterSendingEmailsPage();
+        hideSentFormsPageHeader();
+        hideSentFormsPage();
     }else{
         hidePendingFormsHeader();
+        clearPendingFormsPage();
+        clearFillFormPage();
     }
 
     let xhr = new XMLHttpRequest();
@@ -248,6 +285,7 @@ function logout(){
     currentProfileID = null;
 
     alert("You logged out!");
+    showWelcomePage();
 }
 
 
@@ -260,6 +298,12 @@ function hideLoginHeader(){
 function hideRegisterHeader(){
     let registerHeader = document.querySelector("#registerHeader");
     registerHeader.setAttribute("style", "display: none");
+}
+
+
+function hideLogoutHeader(){
+    let header = document.querySelector("#logoutHeader");
+    header.setAttribute("style", "display: none");
 }
 
 
@@ -376,6 +420,7 @@ function hideLoginPage(){
 
 
 function showLoginPage() {
+    hideWelcomePage();
     //Load in the Login "page"
 
     hideRegisterPage();     //But first hide the Register page if it's clicked before.
@@ -385,6 +430,7 @@ function showLoginPage() {
 
 
 function showRegisterPage(){
+    hideWelcomePage();
     //Load in the Register "page"
 
     hideLoginPage();        //But first hide the Login page if it's clicked before.
@@ -421,3 +467,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     header.appendChild(headerElement);
 })
+
+
+function showWelcomePage(){
+    let welcomePage = document.querySelector("#welcomePage");
+    welcomePage.setAttribute("style", "display: unset");
+}
+
+
+function hideWelcomePage(){
+    let welcomePage = document.querySelector("#welcomePage");
+    welcomePage.setAttribute("style", "display: none");
+}
