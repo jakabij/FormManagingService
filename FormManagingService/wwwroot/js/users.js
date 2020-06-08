@@ -269,6 +269,8 @@ function logout(){
         hideSentFormsPageHeader();
         hideSentFormsPage();
         hideUserAnswers();
+        clearSentFormsPage();
+        hideDetailsOfTheFormPage();
     }else{
         hidePendingFormsHeader();
         clearPendingFormsPage();
