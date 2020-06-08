@@ -18,33 +18,38 @@
 
 
     <form id="registerForms" method="POST" style="display: none">
-        <a>Username: </a> <br />
-        <input type="text" name="username" id="registerUsername" />
+        <a class="registerLoginText">Username: </a>
+        <br />
+        <input class="registerLoginField" type="text" name="username" id="registerUsername" />
         <br />
 
-        E-mail: <br />
-        <input type="text" name="email" id="registerEmail" />
+        <a class="registerLoginText">E-mail:</a>
+        <br />
+        <input class="registerLoginField" type="text" name="email" id="registerEmail" />
         <br />
 
-        Password: <br />
-        <input type="text" name="password" id="registerPassword" />
+        <a class="registerLoginText">Password:</a>
+        <br />
+        <input class="registerLoginField" type="text" name="password" id="registerPassword" />
 
         <br /> <br />
-        <input type="button" onclick="register(this.form)" value="Create" />
+        <input class="registerLoginButton" type="button" onclick="register(this.form)" value="Create" />
     </form>
 
 
 
     <form id="loginForms" method="POST" style="display: none">
-        Email: <br />
-        <input type="text" name="email">    @*admin@admin.com    1@1.com*@
+        <a class="registerLoginText">Email:</a>
+        <br />
+        <input class="registerLoginField" type="text" name="email">    @*admin@admin.com    1@1.com*@
         <br />
 
-        Password: <br />
-        <input type="text" name="password">   @*admin    1*@
+        <a class="registerLoginText">Password:</a>
+        <br />
+        <input class="registerLoginField" type="text" name="password">   @*admin    1*@
 
         <br /> <br />
-        <input type="button" name="button" value="login" onClick="login(this.form)">
+        <input class="registerLoginButton" type="button" name="button" value="Login" onClick="login(this.form)">
     </form>
 
 

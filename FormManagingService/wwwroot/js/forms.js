@@ -34,21 +34,32 @@ function sendToUsers(form){
     let header = document.querySelector("#logoutHeader");
     header.setAttribute("style", "display: unset");
     
-    showFormMakingHeader();
-    showSentFormsPageHeader();
-
     let data = new FormData();
     data.append("adminID", currentProfileID);
     data.append("emailCount", emailAdressCounter);
 
+    let okToSend = true;
+
     for(let count = 0; count < emailAdressCounter; count++){
         let dataElementName = "email" + (count + 1);
-        data.append(dataElementName, document.forms["emailAddingForm"][dataElementName].value);
+
+        let emailAdress = document.forms["emailAddingForm"][dataElementName].value;
+
+        if(emailAdress === ""){
+            okToSend = false;
+            alert("You must add an email adress!");
+            break;
+        }else{
+            data.append(dataElementName, emailAdress);
+        }
     }
 
-    sendDataToFormsEmail("Form/AddUsersToForm", data);
-
-    emailAdressCounter = 1;
+    if(okToSend){
+        showFormMakingHeader();
+        showSentFormsPageHeader();
+        sendDataToFormsEmail("Form/AddUsersToForm", data);
+        emailAdressCounter = 1;
+    }
 }
 
 
@@ -61,12 +72,14 @@ function addMoreEmail(){
 
     let emailText = document.createElement("a");
     emailText.textContent = "Email:"
+    emailText.setAttribute("class", "textContent");
     emailAddingPage.appendChild(emailText);
 
     emailAddingPage.appendChild(document.createElement("br"));
 
     let anotherEmail = document.createElement("input");
     anotherEmail.setAttribute("type", "text");
+    anotherEmail.setAttribute("class", "createFormButton");
     let emailID = "email" + emailAdressCounter;
     anotherEmail.setAttribute("name", emailID);
 
@@ -98,6 +111,7 @@ function showEmailAddingPage(){
 
     let emailText = document.createElement("a");
     emailText.textContent = "Email:"
+    emailText.setAttribute("class", "textContent");
     emailAddingPage.appendChild(emailText);
 
     emailAddingPage.appendChild(document.createElement("br"));
@@ -105,6 +119,7 @@ function showEmailAddingPage(){
     let firstEmail = document.createElement("input");
     firstEmail.setAttribute("type", "text");
     firstEmail.setAttribute("name", "email1");
+    firstEmail.setAttribute("class", "createFormButton");
 
     emailAddingPage.appendChild(firstEmail);
 }
@@ -146,14 +161,25 @@ function saveForm(form){
         data.append("adminID", currentProfileID);
         data.append("questionCount", questionCounter);
         data.append("questionTitle", document.forms["questionForm"]["formTitle"].value);
+
+        let okToSend = true;
+
         for(let i = 0; i < questionCounter; i++){
             let questionID = "question" + i;
-            data.append(questionID, document.forms["questionForm"][questionID].value);
+            let question = document.forms["questionForm"][questionID].value;
+            if (question === "" || document.forms["questionForm"]["formTitle"].value === ""){
+                alert("You must fill the blocks!");
+                okToSend = false;
+                break;
+            }else{
+                data.append(questionID, question);
+            }
         }
 
-        sendDataToForms("Form/AddForm", data);
-
-        questionCounter = 0;
+        if(okToSend){
+            sendDataToForms("Form/AddForm", data);
+            questionCounter = 0;
+        }
     }
 }
 
@@ -163,6 +189,7 @@ function addQuestion(formStack, counter){   //Generate the questions
 
     let questionText = document.createElement("a");
     questionText.textContent = "What is going to be the question?"
+    questionText.setAttribute("class", "textContent");
     formStack.appendChild(questionText);
     formStack.appendChild(document.createElement("br"));
 
@@ -171,13 +198,11 @@ function addQuestion(formStack, counter){   //Generate the questions
     let questionId = "question" + counter;
     question.setAttribute("id", questionId);
     question.setAttribute("name", questionId);
+    question.setAttribute("class", "createFormButton");
 
     formStack.appendChild(question);
     formStack.appendChild(document.createElement("br"));
     questionCounter ++;
-
-
-    console.log("Question number: "+questionCounter)
 }
 
 
@@ -211,6 +236,7 @@ function createFormPage(){          //in this page you can create forms and save
 
     let questionButton = document.createElement("input");
     questionButton.setAttribute("type","button");
+    questionButton.setAttribute("class", "registerLoginButton");
     questionButton.setAttribute("id", "addQuestionButton");
     questionButton.setAttribute("value", "Add Question");
     questionButton.addEventListener("click", ()=>{
@@ -223,10 +249,12 @@ function createFormPage(){          //in this page you can create forms and save
 
     let titleText = document.createElement("a");
     titleText.textContent = "The title of the form:"
+    titleText.setAttribute("class", "textContent");
     createFormPage.appendChild(titleText);
 
     createFormPage.appendChild(document.createElement("br"));
     let titleInput = document.createElement("input");
+    titleInput.setAttribute("class", "createFormButton");
     titleInput.setAttribute("id", "formTitle");
     titleInput.setAttribute("name", "formTitle");
 

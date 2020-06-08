@@ -400,7 +400,11 @@ function register(form)
     data.append('email', form.email.value);
     data.append('password', form.password.value);
     
-    sendDataToRegister("User/Register", data);
+    if(form.username.value === "" || form.email.value === "" || form.password.value === ""){
+        alert("You must fill all blocks!")
+    }else{
+        sendDataToRegister("User/Register", data);
+    }
 }
 
 

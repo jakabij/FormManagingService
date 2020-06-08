@@ -57,3 +57,38 @@
 body{
     background-color: beige;
 }
+
+.registerLoginField{
+    margin-left: 30%;
+    width: 40%;
+    margin-block-end: 4%;
+}
+
+.registerLoginText{
+    margin-left: 27%;
+    font-size: x-large;
+}
+
+.registerLoginButton{
+    margin-left: 39%;
+    width: 20%;
+}
+
+
+.titleContent{
+    padding-left: 30%;
+}
+
+.textContent{
+    padding-left: 8%;
+}
+
+.tableText{
+    padding-left: 5%;
+    padding-top: 10%;
+    padding-bottom: 4%;
+}
+
+.createFormButton{
+    margin-left: 10%;
+}

@@ -146,21 +146,31 @@ function sendToMoreUser(formID){
         data.append("adminID", currentProfileID);
         data.append("formID", formID);
         data.append("counter", emailCounter);
+
+        let okToSend = true;
         for(let i = 0; i < emailCounter; i++){
             inputID = "moreEmail" + i;
+            let emailAdress = document.forms["moreEmailForm"][inputID].value;
 
-            console.log("YEEET: "+ inputID)
+            if(emailAdress === ""){
+                alert("You must write an email adress if you clicked!");
+                okToSend = false;
 
-            data.append(inputID, document.forms["moreEmailForm"][inputID].value)
+                break;
+            }else{
+                data.append(inputID, emailAdress);
+            }
         }
 
-        emailCounter = 0;
-        sendDataToAppendEmails("UsersFormsConnection/AppendEmails", data);
+        if(okToSend){
+            emailCounter = 0;
+            sendDataToAppendEmails("UsersFormsConnection/AppendEmails", data);
+        }
     })
 
     moreEmailForm.appendChild(confirmButton);
 
-    emailCounter++;     //ezt megnézni paraméter átadásos növelés során.
+    emailCounter++;
 }
 
 
@@ -171,9 +181,9 @@ function sendDataToUsersFormsConnection(destination, data){
     if (xhr != null) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-               let users = JSON.parse(xhr.responseText);
+                let users = JSON.parse(xhr.responseText);
 
-               let userTable = document.querySelector("#tableForUsersWhoGotTheForm");
+                let userTable = document.querySelector("#tableForUsersWhoGotTheForm");
 
                 let userTableBody = document.createElement("tbody");
 
@@ -244,19 +254,10 @@ function sendDataToUsersFormsConnection(destination, data){
 
                     userTable.appendChild(userTableBody);
                 })
-               
-                
-
-
-
-
-
-
 
                 let showDetailsOfTheFormPage = document.querySelector("#showDetailsOfTheFormPage");
                 
                 showDetailsOfTheFormPage.appendChild(document.createElement("br"));
-
                 
                 let addMoreEmailButton = document.createElement("input");
                 addMoreEmailButton.setAttribute("type", "button");
@@ -267,15 +268,6 @@ function sendDataToUsersFormsConnection(destination, data){
                 });
 
                 showDetailsOfTheFormPage.appendChild(addMoreEmailButton);
-               
-
-
-
-                //add more emails
-
-
-
-
             }
         }
         xhr.open('POST', destination, true);
@@ -299,6 +291,7 @@ function showAllUsersAsDetail(element){
     showDetailsOfTheFormPage.setAttribute("style", "display: unset");
 
     let header = document.createElement("h1");
+    header.setAttribute("class", "titleContent");
     header.textContent = element.title;
 
     showDetailsOfTheFormPage.appendChild(header);
@@ -307,12 +300,21 @@ function showAllUsersAsDetail(element){
         let questionBlock = document.createElement("div");
 
         header = document.createElement("h4");
+        header.setAttribute("class", "textContent");
         header.textContent = question.title;
         questionBlock.appendChild(header);
 
         showDetailsOfTheFormPage.appendChild(questionBlock);
         showDetailsOfTheFormPage.appendChild(document.createElement("br"));
     })
+
+    
+
+    header = document.createElement("h4");
+    header.setAttribute("class", "tableText");
+    header.textContent = "User(s) who got the form:";
+    showDetailsOfTheFormPage.appendChild(header);
+
 
     let table = document.createElement("table");
     table.setAttribute("id", "tableForUsersWhoGotTheForm");
@@ -475,6 +477,7 @@ function afterSendingEmails(wrongEmails){
         let text = document.createElement("a");
         text.setAttribute("style", "color: green");
         text.textContent = "Successfully sent all of the forms to the emails.";
+        text.setAttribute("class", "textContent");
 
         afterSendingPage.appendChild(text);
     }else{
@@ -482,6 +485,7 @@ function afterSendingEmails(wrongEmails){
             let text = document.createElement("a");
             text.textContent = "Failed to send form to " + element;
             text.setAttribute("style", "color: red");
+            text.setAttribute("class", "textContent");
 
             afterSendingPage.appendChild(text);
         })   
